@@ -9,29 +9,31 @@ public class UDPClientTest {
         try{
             
             aSocket = new DatagramSocket();
-            byte[] msg = args[0].getBytes();
-            InetAddress aHost = InetAddress.getByName(args[1]);
-            int serverPort = Integer.parseInt(args[2]);
-        	DatagramPacket request = new DatagramPacket(msg, msg.length, aHost, serverPort);
-        	aSocket.send(request);	
+            //byte[] msg = args[0].getBytes();
+            InetAddress aHost = InetAddress.getByName(args[0]);
+            int serverPort = Integer.parseInt(args[1]);
+        	//DatagramPacket request = new DatagramPacket(msg, msg.length, aHost, serverPort);
+        	//aSocket.send(request);	
 
             Scanner scan = new Scanner(System.in);
             System.out.println("Digite seu nick:");
             String nick = scan.nextLine();
 
-            byte[] msg1 = nick.getBytes();
+            /*byte[] msg1 = nick.getBytes();
             DatagramPacket request2 = new DatagramPacket(msg1, msg1.length, aHost, serverPort);
-            aSocket.send(request2);	
+            aSocket.send(request2);	*/
 
             System.out.println("Bem vindo, " + nick);
 
-            System.out.println("""
+            boolean jogoAtivo = true;
+            while(jogoAtivo){
+                System.out.println("""
             ╔════════════════════════════════════════════════════════╗
             ║                MENU - Jogo da Sobrevivência            ║
             ╠════════════════════════════════════════════════════════╣
-            ║  1️  - Ver as regras do jogo                            ║
-            ║  2️  - Iniciar o jogo                                   ║
-            ║  3️  - Sair do jogo                                     ║
+            ║  1  - Ver as regras do jogo                            ║
+            ║  2  - Iniciar o jogo                                   ║
+            ║  3  - Sair do jogo                                     ║
             ╚════════════════════════════════════════════════════════╝
             """);
 
@@ -59,13 +61,19 @@ public class UDPClientTest {
                     O jogador que primeiro chegar a menos seis pontos será eliminado do jogo.
                     O último jogador é declarado vencedor do Jogo da Sobrevivência Numérica.                   ----------------------------------------------------------------------------
                     """);
+                    System.out.print("Pressione ENTER para voltar ao menu...");
+                    scan.nextLine(); 
+
                     break;
                 case "2":
+
                     System.out.println("Iniciando o jogo...");
-                    byte[] blocoEscolha = "1".getBytes();
-                    DatagramPacket request3 = new DatagramPacket(blocoEscolha, blocoEscolha.length, aHost, serverPort);
-                    aSocket.send(request3);
+                    byte[] msg1 = nick.getBytes();
+                    DatagramPacket request2 = new DatagramPacket(msg1, msg1.length, aHost, serverPort);
+                    aSocket.send(request2);
                     System.out.println("Enviando seu cadastro para o servidor...");
+                    System.out.println("Aguardando oponentes...");
+                    
 
                     byte[] blocoRetorno = new byte[1000];
                     DatagramPacket pacoteRetorno = new DatagramPacket(blocoRetorno, blocoRetorno.length);
@@ -74,20 +82,23 @@ public class UDPClientTest {
                     String retorno = new String(pacoteRetorno.getData());
                     System.out.println(retorno.trim());
 
-                    byte[] blocoRetorno2 = new byte[1000];
+                    /*byte[] blocoRetorno2 = new byte[1000];
                     DatagramPacket pacoteRetorno2 = new DatagramPacket(blocoRetorno2, blocoRetorno2.length);
                     aSocket.receive(pacoteRetorno2);
 
                     String retorno2 = new String(pacoteRetorno2.getData());
-                    System.out.println(retorno2.trim());
+                    System.out.println(retorno2.trim());*/
 
 
                     break;
                 case "3":
                     System.out.println("Saindo do jogo...");
+                    jogoAtivo = false;
                     break;
                 default:
                     System.out.println("Opção inválida. Tente novamente.");
+            }
+
             }
         	
         }catch(SocketException e){

@@ -21,7 +21,7 @@ public class UDPServerTest {
                 System.out.println("Bora manda as informações ai");
                 bagulho.receive(requisao);
                 
-                String vazio = new String(requisao.getData());
+                String nick = new String(requisao.getData());
                 InetAddress enderecoCliente = requisao.getAddress();
                 int portaCliente = requisao.getPort();
 
@@ -36,93 +36,34 @@ public class UDPServerTest {
                 
 
                 if(!existe){
-                    byte[] blocoNick = new byte[1000];
-                    DatagramPacket nick = new DatagramPacket(blocoNick, blocoNick.length);
-                    bagulho.receive(nick);
-
-                    String dado = new String(nick.getData());
-
-                    Jogador jogador = new Jogador(dado, portaCliente, enderecoCliente, 0);
+                    Jogador jogador = new Jogador(nick, portaCliente, enderecoCliente, 0);
                     jogadores.add(jogador);
-                    System.out.println("Jogador adicionado: " + jogador.getPorta());
-                }
-                else{
+ 
+                    System.out.println("Nome do jogador: " + jogador.getNome());
+                    System.out.println("Cliente IP: " + jogador.getIp());
+                    System.out.println("Cliente Porta: " + jogador.getPorta());
+                
+                }else{
                     System.out.println("Jogador já existe na lista.");
                 }
 
+                
             }
 
-            List<String> jogadoresConfirmados = new ArrayList<>();
-            int cadastrados =0;
+            for (Jogador jogador : jogadores) {
+                
+                String mensagem = "Jogadores encontrados...";
 
-            while(cadastrados < 3){
-                byte[] blocoEscolha = new byte[1000];
-                DatagramPacket pacoteEscolha = new DatagramPacket(blocoEscolha, blocoEscolha.length);
-                bagulho.receive(pacoteEscolha);
-
-                String choice = new String(pacoteEscolha.getData());
-                InetAddress enderecoCadastro = pacoteEscolha.getAddress();
-                int portaCadastro = pacoteEscolha.getPort();
-
-                String idJogador = enderecoCadastro.toString() + ":" + portaCadastro;
-            
-
-            switch(choice.trim()){
-                case "1":
-                    //System.out.println("Iniciando o jogo com " + jogadores.size() + " jogadores.");
-                    // Aqui você pode adicionar a lógica para iniciar o jogo
-
-                    if(!jogadoresConfirmados.contains(idJogador)){
-                        jogadoresConfirmados.add(idJogador);
-                        cadastrados++;
-
-                        for (Jogador jogador : jogadores) {
-                            if (jogador.getPorta() == portaCadastro && jogador.getIp().equals(enderecoCadastro)) {
-                               
-                                System.out.println("Nome do jogador: " + jogador.getNome());
-                                System.out.println("Cliente IP: " + jogador.getIp());
-                                System.out.println("Cliente Porta: " + jogador.getPorta());
-
-                                String mensagem = (cadastrados < 3)
-                                ?"Aguardando oponentes..."
-                                : "Jogadores encontrados...";
-
-                                byte[] blocomsg = mensagem.getBytes();
-                                DatagramPacket pacotemsg = new DatagramPacket(blocomsg, blocomsg.length, enderecoCadastro, portaCadastro);
-                                bagulho.send(pacotemsg);	
-                            }
-                        }
-
-                        if(cadastrados == 3) {
-                            for (Jogador jogador : jogadores) {
-
-                                String mensagem = "Jogadores encontrados...";
-
-                                byte[] blocomsg = mensagem.getBytes();
-                                DatagramPacket pacotemsg = new DatagramPacket(blocomsg, blocomsg.length, jogador.getIp(), jogador.getPorta());
-                                bagulho.send(pacotemsg);
-                            }
-
-                        }
-                    }
-
-                    break;
-
-                case "2":
-                    System.out.println("Saindo do jogo.");
-                    break;
-                default:
-                    System.out.println("Escolha inválida.");
+                byte[] blocomsg = mensagem.getBytes();
+                DatagramPacket pacotemsg = new DatagramPacket(blocomsg, blocomsg.length, jogador.getIp(), jogador.getPorta());
+                bagulho.send(pacotemsg);	
+                
             }
-
-            
-
-        }
-
+                    
         }
         
         catch(SocketException erro){
-            System.out.println("Socket de erro aqui pai" + erro.getMessage());
+            System.out.println("Socket deu erro aqui pai" + erro.getMessage());
         }
 
         catch(IOException error){

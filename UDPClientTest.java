@@ -39,6 +39,7 @@ public class UDPClientTest {
 
             System.out.print("O que deseja: ");
             String escolha = scan.nextLine();
+            scan.nextLine(); 
 
             switch (escolha) {
                 case "1":
@@ -102,7 +103,7 @@ public class UDPClientTest {
 
                         System.out.println("Seu Placar é: " + pontos);
 
-                        if(pontos == -6){
+                        if(pontos <= -6){
                             System.out.println("Você foi eliminado do jogo!");
                             ativo = false;
                         }

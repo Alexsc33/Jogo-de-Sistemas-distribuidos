@@ -102,6 +102,14 @@ public class UDPServerTest {
                     distancia[i] = Math.abs(numeros[i] - valorAlvo);
                 }
 
+                for (int i = 0; i < 3; i++) {
+                    for (Jogador jogador : jogadores) {
+                        if (jogador.getIp().equals(enderecosClientes[i]) && jogador.getPorta() == portasClientes[i]) {
+                            System.out.println("Jogador " + jogador.getNome() + " está a " + distancia[i] + " de distância do valor alvo.");
+                        }
+                    }
+                }
+
                 int maisProximo = 0;
                 int maisDistante = 0;
 
@@ -119,13 +127,15 @@ public class UDPServerTest {
                         if (jogador.getIp().equals(enderecosClientes[i]) && jogador.getPorta() == portasClientes[i]) {
                             if (i == maisProximo) {
                                 jogador.setPontuacao(jogador.getPontuacao() + 0);  
+                                System.out.println("Jogador " + jogador.getNome() + " vai receber 0 pontos.");
                             } else if (i == maisDistante) {
                                 jogador.setPontuacao(jogador.getPontuacao() - 2);  
+                                System.out.println("Jogador " + jogador.getNome() + " vai receber -2 pontos.");
                             } else {
                                 jogador.setPontuacao(jogador.getPontuacao() - 1);  
+                                System.out.println("Jogador " + jogador.getNome() + " vai receber -1 pontos.");
                             }
 
-                            System.out.println("Jogador " + jogador.getNome() + " agora tem " + jogador.getPontuacao() + " pontos.");
                         }   
                     }
                 }
@@ -187,6 +197,14 @@ public class UDPServerTest {
                     distancia[i] = Math.abs(numeros[i] - valorAlvo);
                 }
 
+                for (int i = 0; i < 2; i++) {
+                    for (Jogador jogador : jogadores) {
+                        if (jogador.getIp().equals(enderecosClientes[i]) && jogador.getPorta() == portasClientes[i]) {
+                            System.out.println("Jogador " + jogador.getNome() + " está a " + distancia[i] + " de distância do valor alvo.");
+                        }
+                    }
+                }
+
                 int maisProximo = 0;
                 int maisDistante = 0;
 
@@ -203,12 +221,13 @@ public class UDPServerTest {
                     for (Jogador jogador : jogadores) {
                         if (jogador.getIp().equals(enderecosClientes[i]) && jogador.getPorta() == portasClientes[i]) {
                             if (i == maisProximo) {
-                                jogador.setPontuacao(jogador.getPontuacao() + 0);  
+                                jogador.setPontuacao(jogador.getPontuacao() + 0); 
+                                System.out.println("Jogador " + jogador.getNome() + " vai receber 0 pontos.");
                             } else if (i == maisDistante) {
                                 jogador.setPontuacao(jogador.getPontuacao() - 1);  
+                                System.out.println("Jogador " + jogador.getNome() + " vai receber -1 pontos.");
                             }
-
-                            System.out.println("Jogador " + jogador.getNome() + " agora tem " + jogador.getPontuacao() + " pontos.");
+                            
                         }   
                     }
                 }

@@ -78,9 +78,28 @@ public class UDPClientTest {
                     boolean ativo= true;
 
                     while(ativo){
-                        System.out.println("\nEscolha um número entre 0 e 100:");
-                        System.out.print("Digite um numero:");
-                        int numero = scan.nextInt();
+
+                        int numero = -1;
+
+                        do{
+                            try{
+                            System.out.println("\nEscolha um número entre 0 e 100:");
+                            System.out.print("Digite um numero:");
+                            numero = scan.nextInt();
+
+                            if(numero < 0 || numero > 100){
+                                System.out.println("Número fora do intervalo permitido.");
+                                numero = -1; 
+                                }
+                            }
+                            catch(java.util.InputMismatchException e){
+                                System.out.println("Entrada iválida digite um número inteiro entre 0 e 100."); 
+                                scan.nextLine(); 
+                                numero = -1;
+                            }
+
+                        }while(numero < 0 || numero > 100);
+
 
                         byte[] msg2 = String.valueOf(numero).getBytes();
                         DatagramPacket request3 = new DatagramPacket(msg2, msg2.length, aHost, serverPort);
@@ -111,6 +130,8 @@ public class UDPClientTest {
 
                     scan.nextLine();
                     break;
+
+                    
                 case "3":
                     System.out.println("Saindo do jogo...");
                     jogoAtivo = false;

@@ -172,7 +172,7 @@ public class UDPServerTest {
 
                     byte[] blocomsg = mensagem.getBytes();
                     DatagramPacket pacotemsg = new DatagramPacket(blocomsg, blocomsg.length, jogador.getIp(), jogador.getPorta());
-                 bSocket.send(pacotemsg);
+                    bSocket.send(pacotemsg);
 
                 }
 

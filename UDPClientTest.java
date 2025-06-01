@@ -9,19 +9,12 @@ public class UDPClientTest {
         try{
             
             aSocket = new DatagramSocket();
-            //byte[] msg = args[0].getBytes();
             InetAddress aHost = InetAddress.getByName(args[0]);
-            int serverPort = Integer.parseInt(args[1]);
-        	//DatagramPacket request = new DatagramPacket(msg, msg.length, aHost, serverPort);
-        	//aSocket.send(request);	
+            int serverPort = Integer.parseInt(args[1]);	
 
             Scanner scan = new Scanner(System.in);
             System.out.println("Digite seu nick:");
             String nick = scan.nextLine();
-
-            /*byte[] msg1 = nick.getBytes();
-            DatagramPacket request2 = new DatagramPacket(msg1, msg1.length, aHost, serverPort);
-            aSocket.send(request2);	*/
 
             System.out.println("Bem vindo, " + nick);
 
@@ -39,7 +32,6 @@ public class UDPClientTest {
 
             System.out.print("O que deseja: ");
             String escolha = scan.nextLine();
-            scan.nextLine(); 
 
             switch (escolha) {
                 case "1":
@@ -86,13 +78,17 @@ public class UDPClientTest {
                     boolean ativo= true;
 
                     while(ativo){
-                        System.out.println("Escolha um número entre 0 e 100:");
+                        System.out.println("\nEscolha um número entre 0 e 100:");
                         System.out.print("Digite um numero:");
                         int numero = scan.nextInt();
 
                         byte[] msg2 = String.valueOf(numero).getBytes();
                         DatagramPacket request3 = new DatagramPacket(msg2, msg2.length, aHost, serverPort);
                         aSocket.send(request3);
+
+                        System.out.println("Enviando numero escolhido...");
+                        System.out.println("Servidor está realizando os cálculos...");
+                        System.out.println("Aguardando atualização de seu placar...");
 
                         byte[] novoBlocoRetorno = new byte[1000];
                         DatagramPacket novoPacoteRetorno = new DatagramPacket(novoBlocoRetorno, novoBlocoRetorno.length);
@@ -101,26 +97,19 @@ public class UDPClientTest {
                         String mensagemRecebida = new String(novoPacoteRetorno.getData()).trim();
                         int pontos = Integer.parseInt(mensagemRecebida);
 
-                        System.out.println("Seu Placar é: " + pontos);
+                        System.out.println("Seu Placar é: " + pontos + " \n");
 
                         if(pontos <= -6){
-                            System.out.println("Você foi eliminado do jogo!");
+                            System.out.println("\nVocê foi eliminado do jogo!\n");
                             ativo = false;
                         }
                         else if(pontos == 10){
-                            System.out.println("Você ganhou o jogo!");
+                            System.out.println("\nVocê ganhou o jogo!\n");
                             ativo = false;
-                        } 
+                        }
                     }	
 
-                    /*byte[] blocoRetorno2 = new byte[1000];
-                    DatagramPacket pacoteRetorno2 = new DatagramPacket(blocoRetorno2, blocoRetorno2.length);
-                    aSocket.receive(pacoteRetorno2);
-
-                    String retorno2 = new String(pacoteRetorno2.getData());
-                    System.out.println(retorno2.trim());*/
-
-
+                    scan.nextLine();
                     break;
                 case "3":
                     System.out.println("Saindo do jogo...");
